@@ -1,0 +1,23 @@
+model Inquiry {
+  id        String    @id @default(cuid()) @map("id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  title         String  @map("title") // 문의 제목
+  content       String  @map("content") // 문의 내용
+  isAnswered    Boolean @default(false) @map("is_answered") // 답변 여부
+  inquiryMetaId String  @map("inquiry_meta_id")
+  userId        String? @map("user_id")
+  contact       String? @map("contact")
+  isSecret      Boolean @default(false) @map("is_secret")
+
+  // INFO: 관계
+  inquiryMeta InquiryMeta @relation("inquiry_meta", fields: [inquiryMetaId], references: [id])
+
+  // INFO: 관계 reply
+  replyId String? @map("reply_id")
+  reply   Reply?  @relation("inquiry_reply")
+
+  @@map("inquiry")
+}

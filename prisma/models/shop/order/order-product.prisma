@@ -1,0 +1,54 @@
+/*
+  INFO 주문 상품 table
+*/
+
+enum OrderProductStatus {
+  PAYMENT_DONE     // 결제 완료
+  CANCELLED        // 주문 취소
+  REFUNDED         // 환불 완료
+  IN_DELIVERY      // 배송중 (송장번호 입력됨)
+  ORDER_DELIVERED  // 배송 완료
+}
+
+model OrderProduct {
+  id             String @id @default(cuid()) @map("id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  status               OrderProductStatus @map("status") // 주문 상품 상태
+  orderProductNumber   String @map("order_product_number") // 상품 주문번호 주문순서대로 00001
+
+  name         String @map("name") // 상품명
+  nameShort    String @map("name_short") // 상품명 약어
+
+  // TODO: 옵션 설계에 따른 필드 수정 필요
+  optionName   String @map("option_name") // 옵션명
+
+  qty          Int @map("qty") // 주문 수량
+
+  priceOrigin        Int @map("price_origin") // 판매가(상품가+옵션가)
+  priceTotalDiscount Int @map("price_total_discount") // 총 할인(쿠폰+이벤트)
+  pricePaid          Int @map("price_paid") // 결제 금액
+
+  shippingPrice      Int @map("shipping_price") // 배송비
+  shippingCompany    String @map("shipping_company") // 배송회사
+  shippingNumber     String @map("shipping_number") // 배송 송장번호
+
+  // INFO: 단순 참조 (판매자 정보)
+  sellerId           String @map("seller_id")
+  sellerName         String @map("seller_name")
+
+  // INFO: 관계 1:1 (주문)
+  orderId            String @map("order_id")
+  order              Order @relation("order_product", fields: [orderId], references: [id])
+
+  // INFO: 관계 1:1 (주문 배송지)
+  orderAddressId     String @map("order_address_id")
+  orderAddress       OrderAddress @relation(fields: [orderAddressId], references: [id])
+
+  // INFO: 관계 1:N (주문 상품 이슈)
+  orderIssue         OrderIssue[] @relation("order_product_issue")
+
+  @@map("order_product")
+}

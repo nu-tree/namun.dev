@@ -1,0 +1,16 @@
+model Invitation {
+  id             String   @id @default(cuid()) @map("id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
+  email          String   @map("email")
+  role           String?  @map("role")
+  status         String   @map("status")
+  expiresAt      DateTime @map("expires_at")
+  inviterId      String   @map("inviter_id")
+  organizationId String   @map("organization_id")
+
+  organization Organization @relation("invitation_organization", fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User         @relation("invitation_user", fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@map("invitation")
+}

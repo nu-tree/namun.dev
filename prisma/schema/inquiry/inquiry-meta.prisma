@@ -1,0 +1,16 @@
+model InquiryMeta {
+  id        String    @id @default(cuid()) @map("id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  title       String  @map("title") // 문의 게시판 이름
+  slug        String  @unique @map("slug") // 고유 식별자 (ex. "inquiry")
+  managerName String? @map("manager_name") // 관리자 이름
+  managerMail String? @map("manager_mail") // 관리자 메일
+
+  // INFO: 관계
+  inquiries Inquiry[] @relation("inquiry_meta")
+
+  @@map("inquiry_meta")
+}

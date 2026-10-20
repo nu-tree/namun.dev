@@ -1,0 +1,38 @@
+model Banner {
+  id           String   @id @default(cuid()) @map("id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
+  slug         String   @unique @map("slug") // 고유 식별자 ( top-banner, logo-banner 등 )
+  isView       Boolean  @default(true) @map("is_active") // 배너 노출 (false인 경우 해당 배너타입의 배너들은 노출되지 않음)
+  bannerWidth  Int      @map("banner_width") // 배너 가로 비율
+  bannerHeight Int      @map("banner_height") // 배너 세로 비율
+
+  // INFO: 관계
+  bannerItems BannerItem[]
+
+  @@map("banner")
+}
+
+enum BannerDisplayType {
+  PC
+  MOBILE
+  ALL
+}
+
+model BannerItem {
+  id           String            @id @default(cuid()) @map("id")
+  createdAt    DateTime          @default(now()) @map("created_at")
+  updatedAt    DateTime          @default(now()) @updatedAt @map("updated_at")
+  displayOrder Int               @default(0) @map("display_order") // 노출 순서를 위한 값
+  startDate    DateTime?         @map("start_date") // 배너 노출 시작일
+  endDate      DateTime?         @map("end_date") // 배너 노출 종료일
+  imageUrl     String            @map("image_url") // 배너 이미지
+  linkUrl      String?           @map("link_url") // 선택적: 배너 클릭 시 이동할 URL
+  displayType  BannerDisplayType @map("display_type") // 배너 노출 device
+  bannerId     String            @map("banner_type_id") // 배너 종류 (상단배너, 중단배너, 하단배너 등)
+
+  // INFO: 관계
+  banner Banner @relation(fields: [bannerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("banner_item")
+}

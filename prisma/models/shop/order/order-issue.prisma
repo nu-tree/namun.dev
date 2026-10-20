@@ -1,0 +1,15 @@
+model OrderIssue {
+  id         String @id @default(cuid()) @map("id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+
+  issueType        String @map("issue_type") // 이슈 유형
+  requestMessage   String @map("request_message") // 이슈 요청 메시지
+
+  // INFO: 관계 1:N (주문 상품)
+  orderProductId   String @map("order_product_id")
+  orderProduct     OrderProduct @relation("order_product_issue", fields: [orderProductId], references: [id])
+
+  @@map("order_issue")
+}

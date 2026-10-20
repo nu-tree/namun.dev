@@ -1,0 +1,18 @@
+model OrderCoupon {
+  id        String @id @default(cuid()) @map("id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  orderId   String @map("order_id")
+  couponId  String @map("coupon_id")
+
+  title     String @map("title")
+  price     Int @map("price") // 할인 금액
+  rate      Int? @map("rate") // 정률 할인시 할인율 입력 (0~10.5)
+
+  // INFO: 관계 1:N (주문)
+  order Order @relation("order_coupon", fields: [orderId], references: [id])
+
+  @@map("order_coupon")
+}

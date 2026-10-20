@@ -1,0 +1,23 @@
+model SiteSetting {
+  id        String         @id @default(cuid()) @map("id") // 식별자
+  createdAt DateTime       @default(now()) @map("created_at") // 생성일
+  updatedAt DateTime       @default(now()) @updatedAt @map("updated_at") // 수정일
+  key       SiteSettingKey @map("key") // 설정 키
+  value     String         @map("value") // 설정 값
+
+  @@unique([key])
+  @@map("site_setting")
+}
+
+enum SiteSettingKey {
+  analytics_google
+  gtm_google
+  analytics_naver
+  naver_site_verification
+  seo_site_name
+  seo_site_description
+  seo_site_keywords
+  seo_site_image
+  seo_og_description
+  favicon_image
+}

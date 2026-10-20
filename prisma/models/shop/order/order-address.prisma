@@ -1,0 +1,19 @@
+model OrderAddress {
+  id          String @id @default(cuid()) @map("id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  name           String @map("name") // 수령인 이름
+  tel            String? @map("tel") // 수령인 전화번호
+  phone          String @map("phone") // 수령인 핸드폰번호
+  address        String @map("address") // 수령인 주소
+  addressDetail  String? @map("address_detail") // 수령인 상세주소
+  postcode       String @map("postcode") // 수령인 우편번호
+  message        String? @map("message") // 수령인 메모
+
+  // INFO: 관계 1:N (주문 상품)
+  orderProducts  OrderProduct[]
+
+  @@map("order_address")
+}

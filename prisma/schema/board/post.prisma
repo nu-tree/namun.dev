@@ -1,0 +1,21 @@
+model Post {
+  id        String    @id @default(cuid()) @map("id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  isSecret  Boolean   @default(false) @map("is_secret")
+  password  String?   @map("password")
+  title     String    @map("title") // 게시판 제목
+  content   String    @map("content") // 게시판 내용
+  username  String?   @map("username")
+  userId    String?   @map("user_id")
+  boardId   String    @map("board_id")
+  isDraft   Boolean   @default(false) @map("is_draft")
+  thumbnail String?   @map("thumbnail")
+  comments Comment[]  @relation("comment_post")
+  board    Board      @relation("post_board", fields: [boardId], references: [id])
+  
+  attachments String[]
+
+  @@map("post")
+}

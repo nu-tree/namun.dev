@@ -1,0 +1,18 @@
+/*
+  INFO 주문 이력 table
+  주문 상태 변경시 동작한 사람, 시간을 기록
+*/
+
+model OrderHistory {
+  id          String @id @default(cuid()) @map("id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  history     String @map("history") // 주문 상태 변경 이력
+
+  orderId     String @map("order_id")
+  order       Order @relation("order_history", fields: [orderId], references: [id])
+
+  @@map("order_history")
+}

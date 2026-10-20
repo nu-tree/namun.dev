@@ -1,0 +1,19 @@
+model Reply {
+  id        String    @id @default(cuid()) @map("id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  content   String @map("content") // 답변 내용
+  inquiryId String @map("inquiry_id")
+  userId    String @map("user_id")
+
+  // INFO: 관계 user
+  user User @relation("inquiry_reply", fields: [userId], references: [id])
+
+  // INFO: 관계 inquiry
+  inquiry Inquiry @relation("inquiry_reply", fields: [inquiryId], references: [id])
+
+  @@unique([inquiryId])
+  @@map("reply")
+}

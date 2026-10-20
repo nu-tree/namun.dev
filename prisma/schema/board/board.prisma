@@ -1,0 +1,16 @@
+model Board {
+  id        String    @id @default(cuid()) @map("id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  slug      String    @map("slug") // client에 노출되는 고유 식별자 (예: "notice", "free")
+  title     String    @map("title") // 게시판 제목
+  /// [BoardFeature]
+  feature   Json      @map("feature") // 게시판 기능 설정
+
+  posts Post[] @relation("post_board")
+
+  @@unique([slug])
+  @@index([title])
+  @@map("board")
+}
